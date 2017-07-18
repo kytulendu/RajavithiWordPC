@@ -24,10 +24,7 @@ start:
 												; ah=00h, al=03h
 												; Set display mode to mode 03h (text 80x25 16 color)
 
-				mov		ah,4Ch
-				int		21h						; DOS Services
-												; ah=4ch
-												; Exit with return code in al
+				int		20h						; DOS program terminate
 
 main			ENDP
 

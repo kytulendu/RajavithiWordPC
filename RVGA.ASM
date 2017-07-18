@@ -40,8 +40,7 @@ start:
 												; bh=10h, bl=00h
 												; cx=80h, dx=80h
 
-				mov		ah,4Ch
-				int		21h						; Exit with return code in al
+				int		20h						; DOS program terminate
 
 main			ENDP
 
