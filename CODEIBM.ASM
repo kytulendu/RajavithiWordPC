@@ -1,6 +1,6 @@
-; CODEKU.ASM
-; 08/03/1988
-; Set the iRC Monochrome/Graphic Card (Thai Standard) font to KU code.
+; CODEIBM.ASM
+; 28/02/1990
+; Set the iRC Monochrome/Graphic Card (Thai Standard) to default font.
 
 .8086
 .MODEL TINY
@@ -15,7 +15,7 @@ main			PROC	NEAR
 
 start:
 				mov		dx,3BAh					; Port 3BAh
-				mov		al,2					; Set the Thai card to KU font
+				mov		al,0					; Set the Thai card to default font
 				out		dx,al					; port 3BAh, VGA feature control
 
 				int		20h						; DOS program terminate

@@ -24,5 +24,9 @@ REM CODEKU.COM
 wasm codeku
 wlink name codeku format dos com file codeku.obj
 
+REM CODEIBM.COM
+wasm codeibm
+wlink name codeibm format dos com file codeibm.obj
+
 REM RW.EXE
 wcl rw.c

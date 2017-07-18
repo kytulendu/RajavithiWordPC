@@ -37,7 +37,7 @@ start:
 				int		10h						; Video display
 												; ah=00h, al=03h
 												; Set display mode to mode 03h (text 80x25 16 color)
-
+												; from CODEIBM2.COM
 exit:
 				int		20h						; DOS program terminate
 
