@@ -19,3 +19,6 @@ REM RVGA.COM
 bin2inc rvga.fon rvga.inc
 wasm rvga
 wlink name rvga format dos com file rvga.obj
+
+REM RW.EXE
+wcl rw.c
