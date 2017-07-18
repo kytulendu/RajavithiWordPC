@@ -20,5 +20,9 @@ bin2inc rvga.fon rvga.inc
 wasm rvga
 wlink name rvga format dos com file rvga.obj
 
+REM CODEKU.COM
+wasm codeku
+wlink name codeku format dos com file codeku.obj
+
 REM RW.EXE
 wcl rw.c
