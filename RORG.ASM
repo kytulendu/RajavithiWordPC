@@ -1,6 +1,6 @@
 ; RORG.ASM
 ; 17/09/1991
-; Reset the screen font to original.
+; Reset the EGA/VGA screen font to original.
 
 .8086
 .MODEL TINY
