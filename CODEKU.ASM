@@ -9,17 +9,17 @@
 
 .CODE
 
-		ORG	100h
+        ORG 100h
 
-main			PROC	NEAR
+main            PROC    NEAR
 
 start:
-				mov		dx,3BAh					; Port 3BAh
-				mov		al,2					; Set the Thai card to KU font
-				out		dx,al					; port 3BAh, VGA feature control
+                mov     dx,3BAh                 ; Port 3BAh
+                mov     al,2                    ; Set the Thai card to KU font
+                out     dx,al                   ; port 3BAh, VGA feature control
 
-				int		20h						; DOS program terminate
+                int     20h                     ; DOS program terminate
 
-main			ENDP
+main            ENDP
 
-				END		start
+                END     start
