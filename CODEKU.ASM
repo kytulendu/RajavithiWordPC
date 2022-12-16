@@ -16,7 +16,7 @@ main            PROC    NEAR
 start:
                 mov     dx,3BAh                 ; Port 3BAh
                 mov     al,2                    ; Set the Thai card to KU font
-                out     dx,al                   ; port 3BAh, VGA feature control
+                out     dx,al
 
                 int     20h                     ; DOS program terminate
 
