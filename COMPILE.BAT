@@ -20,6 +20,11 @@ bin2inc rvga.fon rvga.inc
 wasm rvga
 wlink name rvga format dos com file rvga.obj
 
+REM THAICOUR.COM
+bin2inc thaicour.fon thaicour.inc
+wasm thaicour
+wlink name thaicour format dos com file thaicour.obj
+
 REM CODEKU.COM
 wasm codeku
 wlink name codeku format dos com file codeku.obj
