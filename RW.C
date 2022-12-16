@@ -345,8 +345,10 @@ int main( ) {
         switch ( ch ) {
         case '1':
             if ( spawnlp( P_WAIT, "RWMAIN.COM", "RWMAIN.COM", NULL ) == -1 ) {
-                puts( "Cannot find file : RWMAIN.COM" );
-                getch( );
+                if ( spawnlp( P_WAIT, "RWMAIN.EXE", "RWMAIN.EXE", NULL ) == -1 ) {
+                    puts( "Cannot find file : RWMAIN" );
+                    getch( );
+                }
             }
             clrscr( );
             dispmenu( );
