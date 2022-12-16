@@ -1,4 +1,11 @@
 *.obj
+*.OBJ
 *.com
+*.COM
 *.exe
-*.inc
+*.EXE
+*.err
+*.ERR
+REGA.INC
+RVGA.INC
+THAICOUR.INC
