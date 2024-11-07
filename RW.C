@@ -121,7 +121,8 @@ int y_pos = 0;
 char attr;
 
 /* Flag indicate upper/combined character.
-*  0 = middle, 1 = upper, 2 = combined upper character */
+ *  0 = middle, 1 = upper, 2 = combined upper character
+ */
 int upperflag = 0;
 
 /* Previous upper character, using in combined character. */
@@ -130,7 +131,8 @@ char prev_char;
 /* ======================================================================== */
 
 /** Move cursor to given position on the screen. */
-void gotoxy( int p_col, int p_row ) {
+void gotoxy( int p_col, int p_row )
+{
     union REGS r;
 
     r.h.ah = 0x02;          /* Set cursor position */
@@ -141,7 +143,8 @@ void gotoxy( int p_col, int p_row ) {
 }
 
 /** Clear the screen by scroll the screen up. */
-void clrscr( ) {
+void clrscr( )
+{
     union REGS r;
 
     r.h.ah = 0x06;          /* Scroll the screen up */
@@ -153,11 +156,13 @@ void clrscr( ) {
 }
 
 /** Write given character to video memory.
-*   \param[in]  p_char          Character to print.
-*   \param[in]  p_attr          Character attribute.
-*   \param[in]  p_col           Vertical position.
-*   \param[in]  p_row           Horizontal position. */
-void prnchar( register char p_char, register char p_attr, int p_col, int p_row ) {
+ *  \param[in]  p_char          Character to print.
+ *  \param[in]  p_attr          Character attribute.
+ *  \param[in]  p_col           Vertical position.
+ *  \param[in]  p_row           Horizontal position.
+ */
+void prnchar( register char p_char, register char p_attr, int p_col, int p_row )
+{
     char far* scrn = ( char far* ) 0xb8000000UL;
     int offset = ( ( p_row * 0x50 + p_col ) * 2 ) /*+ ( pagenum * 0x1000 )*/;
 
@@ -166,82 +171,88 @@ void prnchar( register char p_char, register char p_attr, int p_col, int p_row )
 }
 
 /** Write given character in middle level.
-*   \param[in]  p_char          Character to print. */
-void putmiddle( char p_char ) {
+ *  \param[in]  p_char          Character to print.
+ */
+void putmiddle( char p_char )
+{
     prnchar( p_char, attr, x_pos, y_pos );
     x_pos = x_pos + 1;
     upperflag = 0;
 }
 
 /** Write given character in under level.
-*   \param[in]  p_char          Character to print. */
-void putunder( char p_char ) {
+ *  \param[in]  p_char          Character to print.
+ */
+void putunder( char p_char )
+{
     y_pos = y_pos - 1 / 80;
     prnchar( p_char, attr, x_pos - 1, y_pos + 1 );
 }
 
 /** Write given character in upper level.
-*   \param[in]  p_char          Character to print. */
-void putupper( char p_char ) {
+ *  \param[in]  p_char          Character to print.
+ */
+void putupper( char p_char )
+{
     prnchar( p_char, attr, x_pos - 1, y_pos - 1 );
 }
 
 /** Find combined character code of given upper character.
-*   \param[in]  p_old           Previous upper character code.
-*   \param[in]  p_new           Current upper character code.
-*   \return char                Combined upper character code. */
-char combinechar( char p_prev, char p_new ) {
+ *  \param[in]  p_old           Previous upper character code.
+ *  \param[in]  p_new           Current upper character code.
+ *  \return char                Combined upper character code.
+ */
+char combinechar( char p_prev, char p_new )
+{
     char newch;
     char tmp_new;
 
     if ( ( p_prev >= SaraIe && p_prev <= Nikkhahit )    /* if p_prev is sara */
-        && p_new >= MaiEk && p_new <= Karan ) { /* if p_new is wannayuk */
-
+        && p_new >= MaiEk && p_new <= Karan ) /* if p_new is wannayuk */
+    {
         tmp_new = p_new - MaiEk;
 
-        switch ( p_prev ) {
+        switch ( p_prev )
+        {
         case SaraIe:                            /* สระอิ */
             newch = combined_SaraIe_table[tmp_new];
             break;
         case SaraE:                             /* สระอี */
-            if ( p_new != Karan ) {
+            if ( p_new != Karan )
+            {
                 newch = combined_SaraE_table[tmp_new];
-            } else {
-                /* Invalid. */
             }
             break;
         case SaraUe:                            /* สระอึ */
-            if ( p_new != Karan ) {
+            if ( p_new != Karan )
+            {
                 newch = combine_SaraUe_table[tmp_new];
-            } else {
-                /* Invalid. */
             }
             break;
         case SaraUee:                           /* สระอือ */
-            if ( p_new != Karan ) {
+            if ( p_new != Karan )
+            {
                 newch = combined_SaraUee_table[tmp_new];
-            } else {
-                /* Invalid. */
             }
             break;
         case MaiHunAkad:                        /* ไม้หันอากาศ */
-            if ( p_new != Karan ) {
+            if ( p_new != Karan )
+            {
                 newch = combined_MaiHunAkad_table[tmp_new];
-            } else {
-                /* Invalid. */
             }
             break;
         case Nikkhahit:                         /* นิคหิต */
-            if ( p_new != Karan ) {
+            if ( p_new != Karan )
+            {
                 newch = combined_Nikkhahit_table[tmp_new];
-            } else {
-                /* Invalid. */
             }
             break;
         }
 
 
-    } else {
+    }
+    else
+    {
         newch = 0x00;
         upperflag = 0;
     }
@@ -250,49 +261,61 @@ char combinechar( char p_prev, char p_new ) {
 }
 
 /** Write a Thai character to the screen.
-*   \param[in]  p_string        String to print.
-*   \param[in]  p_attr          String attribute. */
-void tprnch( char p_char, char p_attr ) {
+ *  \param[in]  p_string        String to print.
+ *  \param[in]  p_attr          String attribute.
+ */
+void tprnch( char p_char, char p_attr )
+{
     attr = p_attr;
 
     /* Check if p_char is not control code. */
-    if ( p_char >= SPACE ) {
+    if ( p_char >= SPACE )
+    {
 
         /* a character code is less than สระอุ */
-        if ( p_char < SaraU ) {
+        if ( p_char < SaraU )
+        {
             putmiddle( p_char );
 
         /* a character code is less than สระอิ */
-        } else if ( p_char < SaraIe ) {
+        }
+        else if ( p_char < SaraIe )
+        {
             putunder( p_char );
 
         /* a character code is equal or more than สระอิ and less than การันต์ */
-        } else if ( p_char >= SaraIe && p_char <= Karan ) {
+        }
+        else if ( p_char >= SaraIe && p_char <= Karan )
+        {
             upperflag = upperflag + 1;
 
-            if ( upperflag == 1 ) {
+            if ( upperflag == 1 )
+            {
                 putupper( p_char );
                 prev_char = p_char;
-            } else if ( upperflag == 2 ) {
+            }
+            else if ( upperflag == 2 )
+            {
                 putupper( combinechar( prev_char, p_char ) );
-            } else {
-                /* Invalid. */
             }
         }
     }
 }
 
 /** Write given Thai string to the screen.
-*   \param[in]  p_string        String to print.
-*   \param[in]  p_attr          String attribute.
-*   \param[in]  p_col           Vertical position.
-*   \param[in]  p_row           Horizontal position. */
-void tprnstr( const char* p_string, char p_attr, int p_col, int p_row ) {
+ *  \param[in]  p_string        String to print.
+ *  \param[in]  p_attr          String attribute.
+ *  \param[in]  p_col           Vertical position.
+ *  \param[in]  p_row           Horizontal position.
+ */
+void tprnstr( const char* p_string, char p_attr, int p_col, int p_row )
+{
     /* Set the x_pos, y_pos global variable. */
     x_pos = p_col;
     y_pos = p_row;
 
-    while ( ( *p_string != '\0' ) && ( p_col < MAXCOL ) ) {
+    while ( ( *p_string != '\0' ) && ( p_col < MAXCOL ) )
+    {
         /* Wait for vertical retrace (vsync). */
         while ( ( inp( 0x03da ) & 1 ) == 0 );
         while ( ( inp( 0x03da ) & 1 ) != 0 );
@@ -304,7 +327,8 @@ void tprnstr( const char* p_string, char p_attr, int p_col, int p_row ) {
 }
 
 /** Display menu. */
-void dispmenu( ) {
+void dispmenu( )
+{
     /* Rajavithi Word PC banner and version info. */
     tprnstr( msg_banner1, HIGHLIGHTATTR, 21, 0 );
     tprnstr( msg_banner2, HIGHLIGHTATTR, 21, 1 );
@@ -327,7 +351,8 @@ void dispmenu( ) {
 }
 
 /** Main function. */
-int main( ) {
+int main( )
+{
     char ch;
     int run = 1;
 
@@ -336,16 +361,20 @@ int main( ) {
     dispmenu( );
 
     /* Loop for keyboard input. */
-    do {
+    do
+    {
         /* Get keyboard input character. */
         ch = getch( );
 
         gotoxy( 24, 17 );
 
-        switch ( ch ) {
+        switch ( ch )
+        {
         case '1':
-            if ( spawnlp( P_WAIT, "RWMAIN.COM", "RWMAIN.COM", NULL ) == -1 ) {
-                if ( spawnlp( P_WAIT, "RWMAIN.EXE", "RWMAIN.EXE", NULL ) == -1 ) {
+            if ( spawnlp( P_WAIT, "RWMAIN.COM", "RWMAIN.COM", NULL ) == -1 )
+            {
+                if ( spawnlp( P_WAIT, "RWMAIN.EXE", "RWMAIN.EXE", NULL ) == -1 )
+                {
                     puts( "Cannot find file : RWMAIN" );
                     getch( );
                 }
@@ -354,7 +383,8 @@ int main( ) {
             dispmenu( );
             break;
         case '2':
-            if ( spawnlp( P_WAIT, "NLQ.EXE", "NLQ.EXE", NULL ) == -1 ) {
+            if ( spawnlp( P_WAIT, "NLQ.EXE", "NLQ.EXE", NULL ) == -1 )
+            {
                 puts( "  Cannot find file : NLQ.EXE " );
                 getch( );
             }
