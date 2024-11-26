@@ -175,7 +175,9 @@ void prnchar( register char p_char, register char p_attr, int p_col, int p_row )
  */
 void putmiddle( char p_char )
 {
-    prnchar( p_char, attr, x_pos, y_pos );
+    gotoxy(x_pos, y_pos);
+    putch(p_char);
+    //prnchar( p_char, attr, x_pos, y_pos );
     x_pos = x_pos + 1;
     upperflag = 0;
 }
@@ -185,8 +187,11 @@ void putmiddle( char p_char )
  */
 void putunder( char p_char )
 {
-    y_pos = y_pos - 1 / 80;
-    prnchar( p_char, attr, x_pos - 1, y_pos + 1 );
+    gotoxy(x_pos - 1, y_pos + 1);
+    putch(p_char);
+    gotoxy(x_pos, y_pos);
+
+    //prnchar( p_char, attr, x_pos - 1, y_pos + 1 );
 }
 
 /** Write given character in upper level.
@@ -194,7 +199,11 @@ void putunder( char p_char )
  */
 void putupper( char p_char )
 {
-    prnchar( p_char, attr, x_pos - 1, y_pos - 1 );
+    gotoxy(x_pos - 1, y_pos - 1);
+    putch(p_char);
+    gotoxy(x_pos, y_pos);
+
+    //prnchar( p_char, attr, x_pos - 1, y_pos - 1 );
 }
 
 /** Find combined character code of given upper character.
