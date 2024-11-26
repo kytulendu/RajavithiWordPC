@@ -6,6 +6,12 @@
 *.EXE
 *.err
 *.ERR
+*.lnk
+*.LNK
+*.map
+*.MAP
+*.sym
+*.SYM
 REGA.INC
 RVGA.INC
 THAICOUR.INC
