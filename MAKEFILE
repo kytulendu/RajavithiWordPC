@@ -177,7 +177,7 @@ thaicour.lnk: $(__MAKEFILES__)
 
 rw: .SYMBOLIC rw.exe
 
-rw_objs = rw.obj
+rw_objs = rw.obj libthai.obj
 
 rw.exe: $(rw_objs) rw.lnk
     $(linker) @rw.lnk
