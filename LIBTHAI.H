@@ -59,21 +59,27 @@
  */
 void gotoxy(int p_col, int p_row);
 
+/** Get row position of the cursor.
+*   \return int                 Cursor position.
+ */
+int wherex();
+
+/** Get column position of the cursor.
+*   \return int                 Cursor position.
+ */
+int wherey();
+
 /** Clear the screen by scroll the screen up. */
 void clrscr();
 
 /** Write a Thai character to the screen.
  *  \param[in]  p_char          Character to print.
- *  \param[in]  p_attr          Character attribute.
  */
-void tprnch(char p_char, char p_attr);
+void tputch(char p_char);
 
 /** Write given Thai string to the screen.
  *  \param[in]  p_string        String to print.
- *  \param[in]  p_attr          String attribute.
- *  \param[in]  p_col           Vertical position.
- *  \param[in]  p_row           Horizontal position.
  */
-void tprnstr(const char* p_string, char p_attr, int p_col, int p_row);
+void tputstr(const char* p_string);
 
 #endif  /* __LIBTHAI_H */

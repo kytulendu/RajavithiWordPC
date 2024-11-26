@@ -135,6 +135,26 @@ void gotoxy(int p_col, int p_row)
     int86(0x10, &r, &r);  /* BIOS video service */
 }
 
+int wherex()
+{
+    union REGS r;
+
+    r.h.ah = 0x03;          /* Set cursor position */
+    r.h.bh = 0x00;          /* Page */
+    int86(0x10, &r, &r);    /* BIOS video service */
+    return r.h.dl;          /* Column */
+}
+
+int wherey()
+{
+    union REGS r;
+
+    r.h.ah = 0x03;          /* Set cursor position */
+    r.h.bh = 0x00;          /* Page */
+    int86(0x10, &r, &r);    /* BIOS video service */
+    return r.h.dh;          /* Row */
+}
+
 void clrscr()
 {
     union REGS r;
@@ -239,10 +259,8 @@ char combinechar(char p_prev, char p_new)
     return newch;
 }
 
-void tprnch(char p_char, char p_attr)
+void tputch(char p_char)
 {
-    attr = p_attr;
-
     /* Check if p_char is not control code. */
     if (p_char >= SPACE)
     {
@@ -274,20 +292,23 @@ void tprnch(char p_char, char p_attr)
     }
 }
 
-void tprnstr(const char* p_string, char p_attr, int p_col, int p_row)
+void tputstr(const char* p_string)
 {
     /* Set the x_pos, y_pos global variable. */
-    x_pos = p_col;
-    y_pos = p_row;
+    x_pos = wherex();
+    y_pos = wherey();
 
-    while ((*p_string != '\0') && (p_col < MAXCOL))
+    // get attribute
+
+    //while ((*p_string != '\0') && (x_pos < MAXCOL))
+    while (*p_string != '\0')
     {
         /* Wait for vertical retrace (vsync). */
         while ((inp(0x03da) & 1) == 0);
         while ((inp(0x03da) & 1) != 0);
 
         /* Write a character at given position. */
-        tprnch(*p_string, p_attr);
+        tputch(*p_string);
         p_string++;
     }
 }
