@@ -214,42 +214,40 @@ char combinechar( char p_prev, char p_new )
 
         switch ( p_prev )
         {
-        case SaraIe:                            /* สระอิ */
-            newch = combined_SaraIe_table[tmp_new];
-            break;
-        case SaraE:                             /* สระอี */
-            if ( p_new != Karan )
-            {
-                newch = combined_SaraE_table[tmp_new];
-            }
-            break;
-        case SaraUe:                            /* สระอึ */
-            if ( p_new != Karan )
-            {
-                newch = combine_SaraUe_table[tmp_new];
-            }
-            break;
-        case SaraUee:                           /* สระอือ */
-            if ( p_new != Karan )
-            {
-                newch = combined_SaraUee_table[tmp_new];
-            }
-            break;
-        case MaiHunAkad:                        /* ไม้หันอากาศ */
-            if ( p_new != Karan )
-            {
-                newch = combined_MaiHunAkad_table[tmp_new];
-            }
-            break;
-        case Nikkhahit:                         /* นิคหิต */
-            if ( p_new != Karan )
-            {
-                newch = combined_Nikkhahit_table[tmp_new];
-            }
-            break;
+            case SaraIe:                            /* สระอิ */
+                newch = combined_SaraIe_table[tmp_new];
+                break;
+            case SaraE:                             /* สระอี */
+                if ( p_new != Karan )
+                {
+                    newch = combined_SaraE_table[tmp_new];
+                }
+                break;
+            case SaraUe:                            /* สระอึ */
+                if ( p_new != Karan )
+                {
+                    newch = combine_SaraUe_table[tmp_new];
+                }
+                break;
+            case SaraUee:                           /* สระอือ */
+                if ( p_new != Karan )
+                {
+                    newch = combined_SaraUee_table[tmp_new];
+                }
+                break;
+            case MaiHunAkad:                        /* ไม้หันอากาศ */
+                if ( p_new != Karan )
+                {
+                    newch = combined_MaiHunAkad_table[tmp_new];
+                }
+                break;
+            case Nikkhahit:                         /* นิคหิต */
+                if ( p_new != Karan )
+                {
+                    newch = combined_Nikkhahit_table[tmp_new];
+                }
+                break;
         }
-
-
     }
     else
     {
@@ -271,20 +269,17 @@ void tprnch( char p_char, char p_attr )
     /* Check if p_char is not control code. */
     if ( p_char >= SPACE )
     {
-
         /* a character code is less than สระอุ */
         if ( p_char < SaraU )
         {
             putmiddle( p_char );
-
-        /* a character code is less than สระอิ */
         }
+        /* a character code is less than สระอิ */
         else if ( p_char < SaraIe )
         {
             putunder( p_char );
-
-        /* a character code is equal or more than สระอิ and less than การันต์ */
         }
+        /* a character code is equal or more than สระอิ and less than การันต์ */
         else if ( p_char >= SaraIe && p_char <= Karan )
         {
             upperflag = upperflag + 1;
@@ -370,39 +365,39 @@ int main( )
 
         switch ( ch )
         {
-        case '1':
-            if ( spawnlp( P_WAIT, "RWMAIN.COM", "RWMAIN.COM", NULL ) == -1 )
-            {
-                if ( spawnlp( P_WAIT, "RWMAIN.EXE", "RWMAIN.EXE", NULL ) == -1 )
+            case '1':
+                if ( spawnlp( P_WAIT, "RWMAIN.COM", "RWMAIN.COM", NULL ) == -1 )
                 {
-                    puts( "Cannot find file : RWMAIN" );
+                    if ( spawnlp( P_WAIT, "RWMAIN.EXE", "RWMAIN.EXE", NULL ) == -1 )
+                    {
+                        puts( "Cannot find file : RWMAIN" );
+                        getch( );
+                    }
+                }
+                clrscr( );
+                dispmenu( );
+                break;
+            case '2':
+                if ( spawnlp( P_WAIT, "NLQ.EXE", "NLQ.EXE", NULL ) == -1 )
+                {
+                    puts( "  Cannot find file : NLQ.EXE " );
                     getch( );
                 }
-            }
-            clrscr( );
-            dispmenu( );
-            break;
-        case '2':
-            if ( spawnlp( P_WAIT, "NLQ.EXE", "NLQ.EXE", NULL ) == -1 )
-            {
-                puts( "  Cannot find file : NLQ.EXE " );
+                clrscr( );
+                dispmenu( );
+                break;
+            case '3':
+                puts( "        Not implemented.     " );
                 getch( );
-            }
-            clrscr( );
-            dispmenu( );
-            break;
-        case '3':
-            puts( "        Not implemented.     " );
-            getch( );
-            clrscr( );
-            dispmenu( );
-            break;
-        case '4':
-        case 27:                                /* escape key */
-            run = 0;
-            break;
-        default:
-            puts( "  Please select number 1-4   " );
+                clrscr( );
+                dispmenu( );
+                break;
+            case '4':
+            case 27:                                /* escape key */
+                run = 0;
+                break;
+            default:
+                puts( "  Please select number 1-4   " );
         }
 
         gotoxy( 20, 19 );
