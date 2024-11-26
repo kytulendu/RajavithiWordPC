@@ -217,6 +217,11 @@ void putmiddle(char p_char)
 
 void putunder(char p_char)
 {
+    if (y_pos == 25)
+    {
+        putch(LF);
+        y_pos = y_pos - 1;
+    }
     gotoxy(x_pos - 1, y_pos + 1);
     putch(p_char);
     gotoxy(x_pos, y_pos);
