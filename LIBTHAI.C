@@ -83,7 +83,7 @@ char attr;
 /* Flag indicate upper/combined character.
  *  0 = middle, 1 = upper, 2 = combined upper character
  */
-int upperflag = 0;
+int level_flag = 0;
 
 /* Previous upper character, using in combined character. */
 char prev_char;
@@ -162,7 +162,7 @@ void putmiddle(char p_char)
     putch(p_char);
     /*prnchar(p_char, attr, x_pos, y_pos);*/
     x_pos = x_pos + 1;
-    upperflag = 0;
+    level_flag = 0;
 }
 
 void putunder(char p_char)
@@ -233,7 +233,7 @@ char combinechar(char p_prev, char p_new)
     else
     {
         newch = 0x00;
-        upperflag = 0;
+        level_flag = 0;
     }
 
     return newch;
@@ -259,14 +259,14 @@ void tprnch(char p_char, char p_attr)
         /* a character code is equal or more than สระอิ and less than การันต์ */
         else if (p_char >= SaraIe && p_char <= Karan)
         {
-            upperflag = upperflag + 1;
+            level_flag = level_flag + 1;
 
-            if (upperflag == 1)
+            if (level_flag == 1)
             {
                 putupper(p_char);
                 prev_char = p_char;
             }
-            else if (upperflag == 2)
+            else if (level_flag == 2)
             {
                 putupper(combinechar(prev_char, p_char));
             }
