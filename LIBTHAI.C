@@ -88,9 +88,20 @@ int level_flag = 0;
 /* Previous upper character, using in combined character. */
 char prev_char;
 
+/* Flag indicate keyboard input mode.
+ * 0 = English, 1 = Thai
+ */
+int mode_flag = 0;
+
 /* ============================ */
 /*  Private Function Prototype  */
 /* ============================ */
+
+void tcursor();
+
+void ecursor();
+
+void beep();
 
 /** Write given character to video memory directly.
  *  \param[in]  p_char          Character to print.
@@ -165,6 +176,25 @@ void clrscr()
     r.w.cx = 0x0000;        /* Upper left corner is (0, 0) */
     r.w.dx = 0x184f;        /* Lower right corner is (4fh, 18h) */
     int86(0x10, &r, &r);  /* BIOS video service */
+}
+
+void tcursor()
+{
+    outp(0x3d4, 0x0a);
+    outp(0x3d5, 0x02);
+}
+
+void ecursor()
+{
+    outp(0x3d4, 0x0a);
+    outp(0x3d5, 0x0b);
+}
+
+void beep()
+{
+    sound(1000);
+    delay(200);
+    nosound();
 }
 
 void prnchar(register char p_char, register char p_attr, int p_col, int p_row)
@@ -311,4 +341,131 @@ void tputstr(const char* p_string)
         tputch(*p_string);
         p_string++;
     }
+}
+
+const char thaitable[] = {
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
+    0x20, 0x2e, 0x5f, 0x32, 0x33, 0x34, 0xeb, 0xa5, 0x36, 0x37, 0x35, 0x39, 0xbf, 0xa2, 0xd3, 0xbb,
+    0xa6, 0xc3, 0x2d, 0x2f, 0xbe, 0xb4, 0xd7, 0xdb, 0xa3, 0xb3, 0xa9, 0xc4, 0xb0, 0xa8, 0xc9, 0xde,
+    0x31, 0xc2, 0x3f, 0xa7, 0xac, 0xad, 0xd2, 0xaa, 0xdf, 0xb1, 0xe3, 0xc6, 0xc5, 0x2c, 0xe4, 0xd6,
+    0xab, 0x30, 0xaf, 0xa4, 0xb6, 0xe2, 0xcb, 0x22, 0x29, 0xe3, 0x28, 0xb8, 0x00, 0xc3, 0xd8, 0x38,
+    0x00, 0xbd, 0xd9, 0xd1, 0xa1, 0xcf, 0xb2, 0xd0, 0xe1, 0xc1, 0xe0, 0xce, 0xc7, 0xb5, 0xdc, 0xb7,
+    0xc0, 0xd5, 0xbc, 0xc8, 0xcc, 0xda, 0xca, 0xd4, 0xb9, 0xdd, 0xba, 0xae, 0x00, 0x2c, 0x00, 0x00
+};
+
+char tgetch()
+{
+    int ch;
+
+    while (ch == ESC)
+    {
+        ch = getch();
+        if (ch == ESC)
+        {
+            mode_flag = !mode_flag;
+            if (mode_flag)
+                tcursor();
+            else
+                ecursor();
+        }
+    }
+
+    return (mode_flag ? thaitable[ch] : ch);
+}
+
+unsigned char idx;
+
+void tdelch(char* p_string)
+{
+    char ch;
+    if (idx > 0)
+    {
+        idx = idx - 1;
+        ch = p_string[idx];
+        if (ch < SaraU)
+        {
+            x_pos = x_pos - 1;
+            gotoxy(x_pos, y_pos);
+            putch(SPACE);
+            gotoxy(x_pos, y_pos);
+        }
+        else if (ch < SaraIe)
+        {
+            putunder(SPACE);
+        }
+        else
+        {
+            putupper(SPACE);
+            ch = p_string[idx - 1];
+            if (ch >= SaraIe)
+            {
+              putupper(ch);
+              level_flag = 2;
+              prev_char = ch;
+            }
+            else
+            {
+                level_flag = 1;
+            }
+        }
+    }
+}
+
+void tgetstr(char* p_string, int p_length)
+{
+    char ch;
+
+    idx = 0;
+    mode_flag = 0;
+
+    x_pos = wherex();
+    y_pos = wherey();
+
+    while (ch != CR) {
+        good_char = 1;
+        ch = tgetch();
+        tputch(ch);
+
+        if (!good_char)
+        {
+            //tdelch(p_string);
+            ch = p_string[idx - 1];
+            if ((ch == SaraU) || (ch == SaraUu))
+            {
+                gotoxy(x_pos, y_pos);
+                level_flag = 0;
+            }
+            else if ((ch >= SaraIe) && (ch <= Karan))
+            {
+                level_flag = 2;
+                prev_char = ch;
+            }
+            else
+            {
+                level_flag = 1;
+            }
+        }
+
+        if ((ch >= SPACE) && good_char)
+        {
+            p_string[idx] = ch;
+            idx = idx + 1;
+        }
+        else
+        {
+            switch (ch)
+            {
+                case BS:
+                    tdelch(p_string);
+                    break;
+                case CR:
+                    //p_string[0] = idx - 1;
+                    //p_string[0] = SPACE;
+                    break;
+            }
+        }
+    }
+    p_string[idx] = '\0';
+    ecursor();
 }

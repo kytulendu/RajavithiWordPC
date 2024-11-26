@@ -33,21 +33,33 @@
 #define MAXCOL              80
 
 /* ASCII character code. */
+#define BS                  0x08
+#define LF                  0x0a
+#define CR                  0x0d
+#define ESC                 0x1b
 #define SPACE               0x20
 
 #define SaraU               0xd7                /* สระอุ */
+#define SaraUu              0xd8                /* สระอู */
 #define SaraIe              0xd9                /* สระอิ */
 #define SaraE               0xda                /* สระอี */
 #define SaraUe              0xdb                /* สระอึ */
 #define SaraUee             0xdc                /* สระอือ */
 #define MaiHunAkad          0xdd                /* ไม้หันอากาศ */
 #define Nikkhahit           0xde                /* นิคหิต */
+#define MaiTaiKhu           0xdf                /* ไม้ไต่คู้ */
 #define MaiEk               0xe0                /* ไม้เอก */
 #define Karan               0xe4                /* การันต์ */
 
 /* Character attribute. */
 #define NORMALATTR          0x07
 #define HIGHLIGHTATTR       0x0f
+
+/* ============================ */
+/*         Table Area           */
+/* ============================ */
+
+extern const int lineoffset[];
 
 /* ============================ */
 /*  Public Function Prototype   */
@@ -81,5 +93,9 @@ void tputch(char p_char);
  *  \param[in]  p_string        String to print.
  */
 void tputstr(const char* p_string);
+
+char tgetch();
+
+void tgetstr(char* p_string, int p_length);
 
 #endif  /* __LIBTHAI_H */
