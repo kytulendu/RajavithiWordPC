@@ -222,7 +222,7 @@ void putcha(register char p_char, register char p_attr)
     r.h.al = p_char;        /* Character to display */
     r.h.bh = 0x00;          /* Page */
     r.h.bl = p_attr;        /* Attribute */
-    r.h.cx = 1;             /* Number of times to write character */
+    r.w.cx = 1;             /* Number of times to write character */
     int86(0x10, &r, &r);    /* BIOS video service */
 }
 
