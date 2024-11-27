@@ -103,8 +103,6 @@ void tcursor();
 
 void ecursor();
 
-void beep();
-
 /** Write given character to video memory directly.
  *  \param[in]  p_char          Character to print.
  *  \param[in]  p_attr          Character attribute.

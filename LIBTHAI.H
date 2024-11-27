@@ -84,6 +84,9 @@ int wherey();
 /** Clear the screen by scroll the screen up. */
 void clrscr();
 
+/** Emit a beep sound */
+void beep();
+
 /** Write a character at current cursor position.
  *  \param[in]  p_char          Character to print.
  *  \param[in]  p_attr          Character attribute.
