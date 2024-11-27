@@ -214,14 +214,14 @@ void setputattr(char p_attr)
     char_attr = p_attr;
 }
 
-void putcha(register char p_char, register char p_attr)
+void putcha(register char p_char)
 {
     union REGS r;
 
     r.h.ah = 0x09;          /* Write a character at cursor position */
     r.h.al = p_char;        /* Character to display */
     r.h.bh = 0x00;          /* Page */
-    r.h.bl = p_attr;        /* Attribute */
+    r.h.bl = char_attr;     /* Attribute */
     r.w.cx = 1;             /* Number of times to write character */
     int86(0x10, &r, &r);    /* BIOS video service */
 }
@@ -229,7 +229,7 @@ void putcha(register char p_char, register char p_attr)
 void putmiddle(char p_char)
 {
     gotoxy(x_pos, y_pos);
-    putcha(p_char, char_attr);
+    putcha(p_char);
     /*prnchar(p_char, attr, x_pos, y_pos);*/
     x_pos = x_pos + 1;
     level_flag = 1;
@@ -240,11 +240,11 @@ void putunder(char p_char)
 {
     if (y_pos == 25)
     {
-        putcha(LF, char_attr);
+        putcha(LF);
         y_pos = y_pos - 1;
     }
     gotoxy(x_pos - 1, y_pos + 1);
-    putcha(p_char, char_attr);
+    putcha(p_char);
     gotoxy(x_pos, y_pos);
 
     /*prnchar(p_char, attr, x_pos - 1, y_pos + 1);*/
@@ -253,7 +253,7 @@ void putunder(char p_char)
 void putupper(char p_char)
 {
     gotoxy(x_pos - 1, y_pos - 1);
-    putcha(p_char, char_attr);
+    putcha(p_char);
     gotoxy(x_pos, y_pos);
 
     /*prnchar(p_char, attr, x_pos - 1, y_pos - 1);*/
@@ -445,7 +445,7 @@ void tdelch(char* p_string)
         {
             x_pos = x_pos - 1;
             gotoxy(x_pos, y_pos);
-            putcha(SPACE, char_attr);
+            putcha(SPACE);
             gotoxy(x_pos, y_pos);
         }
         else if (ch < SaraIe)
