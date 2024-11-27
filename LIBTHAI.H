@@ -84,6 +84,12 @@ int wherey();
 /** Clear the screen by scroll the screen up. */
 void clrscr();
 
+/** Write a character at current cursor position.
+ *  \param[in]  p_char          Character to print.
+ *  \param[in]  p_attr          Character attribute.
+ */
+void putcha(register char p_char, register char p_attr);
+
 /** Write a Thai character to the screen.
  *  \param[in]  p_char          Character to print.
  */

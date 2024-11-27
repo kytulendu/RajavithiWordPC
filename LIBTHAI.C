@@ -208,6 +208,18 @@ void prnchar(register char p_char, register char p_attr, int p_col, int p_row)
     scrn[offset + 1] = p_attr;
 }
 
+void putcha(register char p_char, register char p_attr)
+{
+    union REGS r;
+
+    r.h.ah = 0x09;          /* Write a character at cursor position */
+    r.h.al = p_char;        /* Character to display */
+    r.h.bh = 0x00;          /* Page */
+    r.h.bl = p_attr;        /* Attribute */
+    r.h.cx = 1;             /* Number of times to write character */
+    int86(0x10, &r, &r);    /* BIOS video service */
+}
+
 void putmiddle(char p_char)
 {
     gotoxy(x_pos, y_pos);
