@@ -233,6 +233,7 @@ void putmiddle(char p_char)
     /*prnchar(p_char, attr, x_pos, y_pos);*/
     x_pos = x_pos + 1;
     level_flag = 1;
+    gotoxy(x_pos, y_pos);
 }
 
 void putunder(char p_char)
