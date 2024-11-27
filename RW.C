@@ -53,87 +53,100 @@ const char msg_anykey[] = "PRESS ANY KEY TO CONTINUE :";
 /* ======================================================================== */
 
 /** Display menu. */
-void dispmenu( )
+void dispmenu()
 {
     /* Rajavithi Word PC banner and version info. */
-    tprnstr( msg_banner1, HIGHLIGHTATTR, 21, 0 );
-    tprnstr( msg_banner2, HIGHLIGHTATTR, 21, 1 );
-    tprnstr( msg_banner2, HIGHLIGHTATTR, 21, 3 );
-    tprnstr( msg_banner3, HIGHLIGHTATTR, 21, 2 );
-    tprnstr( msg_banner4, HIGHLIGHTATTR, 21, 4 );
-    tprnstr( msg_banner2, HIGHLIGHTATTR, 21, 5 );
-    tprnstr( msg_banner5, HIGHLIGHTATTR, 21, 6 );
+    setputattr(HIGHLIGHTATTR);
+    gotoxy(21, 0);
+    tputstr(msg_banner1);
+    gotoxy(21, 1);
+    tputstr(msg_banner2);
+    gotoxy(21, 3);
+    tputstr(msg_banner2);
+    gotoxy(21, 2);
+    tputstr(msg_banner3);
+    gotoxy(21, 4);
+    tputstr(msg_banner4);
+    gotoxy(21, 5);
+    tputstr(msg_banner2);
+    gotoxy(21, 6);
+    tputstr(msg_banner5);
 
     /* <MAIN MENU> */
-    tprnstr( msg_mainmenu, NORMALATTR, 33, 11 );
+    setputattr(NORMALATTR);
+    gotoxy(33, 11);
+    tputstr(msg_mainmenu);
 
     /* Menu list */
-    tprnstr( msg_menu1, NORMALATTR, 15, 13 );
-    tprnstr( msg_menu2, NORMALATTR, 15, 15 );
+    gotoxy(15, 13);
+    tputstr(msg_menu1);
+    gotoxy(15, 15);
+    tputstr(msg_menu2);
 
     /* Please select */
-    tprnstr( msg_select, NORMALATTR, 9, 19 );
-    gotoxy( 20, 19 );
+    gotoxy(9, 19);
+    tputstr(msg_select);
+    gotoxy(20, 19);
 }
 
 /** Main function. */
-int main( )
+int main()
 {
     char ch;
     int run = 1;
 
-    clrscr( );
+    clrscr();
 
-    dispmenu( );
+    dispmenu();
 
     /* Loop for keyboard input. */
     do
     {
         /* Get keyboard input character. */
-        ch = getch( );
+        ch = getch();
 
-        gotoxy( 24, 17 );
+        gotoxy(24, 17);
 
-        switch ( ch )
+        switch (ch)
         {
             case '1':
-                if ( spawnlp( P_WAIT, "RWMAIN.COM", "RWMAIN.COM", NULL ) == -1 )
+                if (spawnlp(P_WAIT, "RWMAIN.COM", "RWMAIN.COM", NULL) == -1)
                 {
-                    if ( spawnlp( P_WAIT, "RWMAIN.EXE", "RWMAIN.EXE", NULL ) == -1 )
+                    if (spawnlp(P_WAIT, "RWMAIN.EXE", "RWMAIN.EXE", NULL) == -1)
                     {
-                        puts( "Cannot find file : RWMAIN" );
-                        getch( );
+                        puts("Cannot find file : RWMAIN");
+                        getch();
                     }
                 }
-                clrscr( );
-                dispmenu( );
+                clrscr();
+                dispmenu();
                 break;
             case '2':
-                if ( spawnlp( P_WAIT, "NLQ.EXE", "NLQ.EXE", NULL ) == -1 )
+                if (spawnlp(P_WAIT, "NLQ.EXE", "NLQ.EXE", NULL) == -1)
                 {
-                    puts( "  Cannot find file : NLQ.EXE " );
-                    getch( );
+                    puts("  Cannot find file : NLQ.EXE ");
+                    getch();
                 }
-                clrscr( );
-                dispmenu( );
+                clrscr();
+                dispmenu();
                 break;
             case '3':
-                puts( "        Not implemented.     " );
-                getch( );
-                clrscr( );
-                dispmenu( );
+                puts("        Not implemented.     ");
+                getch();
+                clrscr();
+                dispmenu();
                 break;
             case '4':
             case 27:                                /* escape key */
                 run = 0;
                 break;
             default:
-                puts( "  Please select number 1-4   " );
+                puts("  Please select number 1-4   ");
         }
 
-        gotoxy( 20, 19 );
+        gotoxy(20, 19);
 
-    } while ( run );
+    } while (run);
 
-    exit( 0 );
+    exit(0);
 }
