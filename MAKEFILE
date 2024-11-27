@@ -190,8 +190,26 @@ rw.lnk: $(__MAKEFILES__)
     @for %i in ($(rw_objs)) do @%append $@ FILE    %i
 
 ##############################################################################
+# demo.exe
+##############################################################################
 
-all: bin2inc codeku codeibm reset rega rvga thaicour rw
+demo: .SYMBOLIC demo.exe
+
+demo_objs = demo.obj libthai.obj
+
+demo.exe: $(demo_objs) demo.lnk
+    $(linker) @demo.lnk
+
+demo.lnk: $(__MAKEFILES__)
+    @%create $@
+    @%append $@ NAME    demo
+    @%append $@ OPTION  quiet, eliminate, map, show
+    @%append $@ DEBUG   all
+    @for %i in ($(demo_objs)) do @%append $@ FILE    %i
+
+##############################################################################
+
+all: bin2inc codeku codeibm reset rega rvga thaicour rw demo
 
 clean: .SYMBOLIC
     @if exist *.com del *.com
