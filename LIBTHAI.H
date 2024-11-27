@@ -107,8 +107,16 @@ void tputch(char p_char);
  */
 void tputstr(const char* p_string);
 
+/** Get English or Thai character from keyboard input.
+ *  Depending on mode_flag, 0 = English, 1 = Thai.
+ * \return char                 Character from keyboard input.
+ */
 char tgetch();
 
+/** Get Thai string from keyboard input.
+ *  \param[in]  p_string        String to print.
+ *  \param[in]  p_length        Length of string to get.
+ */
 void tgetstr(char* p_string, int p_length);
 
 #endif  /* __LIBTHAI_H */
