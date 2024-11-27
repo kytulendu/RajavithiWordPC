@@ -80,10 +80,10 @@ int y_pos = 0;
 /* Character attribute. */
 char attr;
 
-/* Flag indicate upper/combined character.
- *  0 = middle, 1 = upper, 2 = combined upper character
+/* Flag indicate level of character.
+ *  0 = lower, 1 = middle, 2 = upper, 3 = combined upper character
  */
-int level_flag = 0;
+int level_flag = 1;
 
 /* Previous upper character, using in combined character. */
 char prev_char;
@@ -92,6 +92,8 @@ char prev_char;
  * 0 = English, 1 = Thai
  */
 int mode_flag = 0;
+
+int good_char = 1;
 
 /* ============================ */
 /*  Private Function Prototype  */
@@ -212,7 +214,7 @@ void putmiddle(char p_char)
     putch(p_char);
     /*prnchar(p_char, attr, x_pos, y_pos);*/
     x_pos = x_pos + 1;
-    level_flag = 0;
+    level_flag = 1;
 }
 
 void putunder(char p_char)
@@ -243,8 +245,8 @@ char combinechar(char p_prev, char p_new)
     char newch;
     char tmp_new;
 
-    if ((p_prev >= SaraIe && p_prev <= Nikkhahit)   /* if p_prev is sara */
-        && p_new >= MaiEk && p_new <= Karan)        /* if p_new is wannayuk */
+    if (((p_prev >= SaraIe) && (p_prev <= Nikkhahit)) &&    /* if p_prev is sara */
+        ((p_new >= MaiEk) && (p_new <= Karan)))             /* if p_new is wannayuk */
     {
         tmp_new = p_new - MaiEk;
 
@@ -288,7 +290,9 @@ char combinechar(char p_prev, char p_new)
     else
     {
         newch = 0x00;
-        level_flag = 0;
+        level_flag = 1;
+        good_char = 0;
+        beep();
     }
 
     return newch;
@@ -304,24 +308,55 @@ void tputch(char p_char)
         {
             putmiddle(p_char);
         }
-        /* a character code is less than สระอิ */
-        else if (p_char < SaraIe)
+        /* a character code is สระอุ and สระอู */
+        else if ((p_char == SaraU) || (p_char == SaraUu))
         {
-            putunder(p_char);
+            if (level_flag == 1)
+            {
+                putunder(p_char);
+                level_flag = 0;
+            }
+            else
+            {
+                good_char = 0;
+                beep();
+            }
         }
         /* a character code is equal or more than สระอิ and less than การันต์ */
         else if (p_char >= SaraIe && p_char <= Karan)
         {
-            level_flag = level_flag + 1;
-
-            if (level_flag == 1)
+            if (level_flag == 0)
+            {
+                if ((p_char >= MaiEk) && (p_char < Karan))        /* if p_new is wannayuk */
+                {
+                    putupper(p_char);
+                    prev_char = p_char;
+                    level_flag = 2;
+                }
+            }
+            else if (level_flag == 1)
             {
                 putupper(p_char);
                 prev_char = p_char;
+                level_flag = 2;
             }
             else if (level_flag == 2)
             {
-                putupper(combinechar(prev_char, p_char));
+                if (prev_char != p_char)
+                {
+                    putupper(combinechar(prev_char, p_char));
+                    level_flag = 3;
+                }
+                else
+                {
+                    good_char = 0;
+                    beep();
+                }
+            }
+            else        /* level_flag == 3 */
+            {
+                good_char = 0;
+                beep();
             }
         }
     }
@@ -363,8 +398,7 @@ char tgetch()
 {
     int ch;
 
-    while (ch == ESC)
-    {
+    do {
         ch = getch();
         if (ch == ESC)
         {
@@ -374,7 +408,7 @@ char tgetch()
             else
                 ecursor();
         }
-    }
+    } while (ch == ESC);
 
     return (mode_flag ? thaitable[ch] : ch);
 }
@@ -434,7 +468,6 @@ void tgetstr(char* p_string, int p_length)
 
         if (!good_char)
         {
-            //tdelch(p_string);
             ch = p_string[idx - 1];
             if ((ch == SaraU) || (ch == SaraUu))
             {
@@ -443,8 +476,16 @@ void tgetstr(char* p_string, int p_length)
             }
             else if ((ch >= SaraIe) && (ch <= Karan))
             {
-                level_flag = 2;
                 prev_char = ch;
+                ch = p_string[idx - 2];
+                if ((ch >= SaraIe) && (ch <= Nikkhahit))
+                {
+                    level_flag = 3;
+                }
+                else
+                {
+                    level_flag = 2;
+                }
             }
             else
             {
