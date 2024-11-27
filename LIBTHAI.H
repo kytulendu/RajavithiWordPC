@@ -87,6 +87,11 @@ void clrscr();
 /** Emit a beep sound */
 void beep();
 
+/** Set character attribute, for use with function that use putcha().
+ *  \param[in]  p_attr          Character attribute.
+ */
+void setputattr(char p_attr);
+
 /** Write a character at current cursor position.
  *  \param[in]  p_char          Character to print.
  *  \param[in]  p_attr          Character attribute.

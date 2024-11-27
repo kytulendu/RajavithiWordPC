@@ -95,6 +95,9 @@ int mode_flag = 0;
 
 int good_char = 1;
 
+/* Character attribute. */
+char char_attr = NORMALATTR;
+
 /* ============================ */
 /*  Private Function Prototype  */
 /* ============================ */
@@ -206,6 +209,11 @@ void prnchar(register char p_char, register char p_attr, int p_col, int p_row)
     scrn[offset + 1] = p_attr;
 }
 
+void setputattr(char p_attr)
+{
+    char_attr = p_attr;
+}
+
 void putcha(register char p_char, register char p_attr)
 {
     union REGS r;
@@ -221,7 +229,7 @@ void putcha(register char p_char, register char p_attr)
 void putmiddle(char p_char)
 {
     gotoxy(x_pos, y_pos);
-    putch(p_char);
+    putcha(p_char, char_attr);
     /*prnchar(p_char, attr, x_pos, y_pos);*/
     x_pos = x_pos + 1;
     level_flag = 1;
@@ -231,11 +239,11 @@ void putunder(char p_char)
 {
     if (y_pos == 25)
     {
-        putch(LF);
+        putcha(LF, char_attr);
         y_pos = y_pos - 1;
     }
     gotoxy(x_pos - 1, y_pos + 1);
-    putch(p_char);
+    putcha(p_char, char_attr);
     gotoxy(x_pos, y_pos);
 
     /*prnchar(p_char, attr, x_pos - 1, y_pos + 1);*/
@@ -244,7 +252,7 @@ void putunder(char p_char)
 void putupper(char p_char)
 {
     gotoxy(x_pos - 1, y_pos - 1);
-    putch(p_char);
+    putcha(p_char, char_attr);
     gotoxy(x_pos, y_pos);
 
     /*prnchar(p_char, attr, x_pos - 1, y_pos - 1);*/
@@ -436,7 +444,7 @@ void tdelch(char* p_string)
         {
             x_pos = x_pos - 1;
             gotoxy(x_pos, y_pos);
-            putch(SPACE);
+            putcha(SPACE, char_attr);
             gotoxy(x_pos, y_pos);
         }
         else if (ch < SaraIe)
