@@ -146,7 +146,7 @@ void gotoxy(int p_col, int p_row)
     r.h.bh = 0x00;          /* Page */
     r.h.dh = p_row;         /* Row */
     r.h.dl = p_col;         /* Column */
-    int86(0x10, &r, &r);  /* BIOS video service */
+    int86(0x10, &r, &r);    /* BIOS video service */
 }
 
 int wherex()
@@ -178,7 +178,7 @@ void clrscr()
     r.h.bh = 0x7;           /* Normal video attribute */
     r.w.cx = 0x0000;        /* Upper left corner is (0, 0) */
     r.w.dx = 0x184f;        /* Lower right corner is (4fh, 18h) */
-    int86(0x10, &r, &r);  /* BIOS video service */
+    int86(0x10, &r, &r);    /* BIOS video service */
 }
 
 void tcursor()
