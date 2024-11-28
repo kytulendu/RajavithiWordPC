@@ -475,6 +475,7 @@ void tdelch(char* p_string)
             else
             {
                 level_flag = 1;
+                prev_char = ch;
             }
         }
     }
