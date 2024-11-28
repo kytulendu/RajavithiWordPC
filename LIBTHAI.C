@@ -166,6 +166,30 @@ int wherey()
     return r.h.dh;          /* Row */
 }
 
+void scrollup(char p_line)
+{
+    union REGS r;
+
+    r.h.ah = 0x06;          /* Scroll the screen up */
+    r.h.al = p_line;        /* Number of lines to scroll */
+    r.h.bh = 0x7;           /* Normal video attribute */
+    r.w.cx = 0x0000;        /* Upper left corner is (0, 0) */
+    r.w.dx = 0x184f;        /* Lower right corner is (4fh, 18h) */
+    int86(0x10, &r, &r);    /* BIOS video service */
+}
+
+void scrolldown(char p_line)
+{
+    union REGS r;
+
+    r.h.ah = 0x07;          /* Scroll the screen down */
+    r.h.al = p_line;        /* Number of lines to scroll */
+    r.h.bh = 0x7;           /* Normal video attribute */
+    r.w.cx = 0x0000;        /* Upper left corner is (0, 0) */
+    r.w.dx = 0x184f;        /* Lower right corner is (4fh, 18h) */
+    int86(0x10, &r, &r);    /* BIOS video service */
+}
+
 void clrscr()
 {
     union REGS r;

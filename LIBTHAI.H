@@ -83,6 +83,16 @@ int wherex();
  */
 int wherey();
 
+/** Scroll the screen up.
+ *  \param[in]  p_line          Number of lines to scroll up.
+ */
+void scrollup(char p_line);
+
+/** Scroll the screen down.
+ *  \param[in]  p_line          Number of lines to scroll down.
+ */
+void scrolldown(char p_line);
+
 /** Clear the screen by scroll the screen up. */
 void clrscr();
 
