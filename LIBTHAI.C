@@ -367,7 +367,8 @@ void tputch(char p_char)
             }
             else if (level_flag == 2)
             {
-                if (prev_char != p_char)
+                if ((prev_char != p_char) &&
+                    ((prev_char != MaiTaiKhu) || (prev_char != Karan)))
                 {
                     putupper(combinechar(prev_char, p_char));
                     level_flag = 3;
