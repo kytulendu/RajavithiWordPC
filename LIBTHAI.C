@@ -78,7 +78,7 @@ int x_pos = 0;
 int y_pos = 0;
 
 /* Character attribute. */
-char attr;
+char char_attr = NORMALATTR;
 
 /* Flag indicate level of character.
  *  0 = lower, 1 = middle, 2 = upper, 3 = combined upper character
@@ -94,9 +94,6 @@ char prev_char = 0x00;
 int mode_flag = 0;
 
 int good_char = 1;
-
-/* Character attribute. */
-char char_attr = NORMALATTR;
 
 /* ============================ */
 /*  Private Function Prototype  */
