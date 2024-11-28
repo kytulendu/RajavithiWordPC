@@ -374,7 +374,9 @@ void tputch(char p_char)
         /* a character code is equal or more than สระอิ and less than การันต์ */
         else if (p_char >= SaraIe && p_char <= Karan)
         {
-            if (level_flag == 0)
+            /* also check for prev_char if it was still in default value,
+             * prevent bug where you can type upper character at first on second call of tgetstr. */
+            if ((level_flag == 0) && (prev_char != 0x00))
             {
                 if ((p_char >= MaiEk) && (p_char < Karan))        /* if p_new is wannayuk */
                 {
@@ -496,6 +498,11 @@ void tdelch(char* p_string)
 void tgetstr(char* p_string, int p_length)
 {
     char ch;
+
+    /* set these to default, prevent bug where you can type upper character
+     * at first on second call of tgetstr. */
+    level_flag = 0;
+    prev_char = 0x00;
 
     idx = 0;
     mode_flag = 0;
