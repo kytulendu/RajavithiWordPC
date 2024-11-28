@@ -52,6 +52,7 @@
 #define MaiTaiKhu           0xdf                /* ไม้ไต่คู้ */
 #define MaiEk               0xe0                /* ไม้เอก */
 #define Karan               0xe4                /* การันต์ */
+#define MaiHunAkadMaiTo     0xeb                /* ไม้หันอากาศ ไม้โท (฿ button on Thai type writer) */
 
 /* Character attribute. */
 #define NORMALATTR          0x07
