@@ -296,47 +296,40 @@ char combinechar(char p_prev, char p_new)
     {
         tmp_new = p_new - MaiEk;
 
-        switch (p_prev)
+        if (p_prev == SaraIe)                               /* สระอิ */
         {
-            case SaraIe:                            /* สระอิ */
-                newch = combined_SaraIe_table[tmp_new];
-                break;
-            case SaraE:                             /* สระอี */
-                if (p_new != Karan)
-                {
-                    newch = combined_SaraE_table[tmp_new];
-                }
-                break;
-            case SaraUe:                            /* สระอึ */
-                if (p_new != Karan)
-                {
-                    newch = combine_SaraUe_table[tmp_new];
-                }
-                break;
-            case SaraUee:                           /* สระอือ */
-                if (p_new != Karan)
-                {
-                    newch = combined_SaraUee_table[tmp_new];
-                }
-                break;
-            case MaiHunAkad:                        /* ไม้หันอากาศ */
-                if (p_new != Karan)
-                {
-                    newch = combined_MaiHunAkad_table[tmp_new];
-                }
-                break;
-            case Nikkhahit:                         /* นิคหิต */
-                if (p_new != Karan)
-                {
-                    newch = combined_Nikkhahit_table[tmp_new];
-                }
-                break;
+            newch = combined_SaraIe_table[tmp_new];
+        }
+        else if ((p_prev == SaraE) && (p_new != Karan))     /* สระอี */
+        {
+            newch = combined_SaraE_table[tmp_new];
+        }
+        else if ((p_prev == SaraUe) && (p_new != Karan))    /* สระอึ */
+        {
+            newch = combine_SaraUe_table[tmp_new];
+        }
+        else if ((p_prev == SaraUee) && (p_new != Karan))   /* สระอือ */
+        {
+            newch = combined_SaraUee_table[tmp_new];
+        }
+        else if ((p_prev == MaiHunAkad) && (p_new != Karan))/* ไม้หันอากาศ */
+        {
+            newch = combined_MaiHunAkad_table[tmp_new];
+        }
+        else if ((p_prev == Nikkhahit) && (p_new != Karan)) /* นิคหิต */
+        {
+            newch = combined_Nikkhahit_table[tmp_new];
+        }
+        else
+        {
+            newch = p_prev;
+            good_char = 0;
+            beep();
         }
     }
     else
     {
-        newch = 0x00;
-        level_flag = 1;
+        newch = p_prev;
         good_char = 0;
         beep();
     }
@@ -402,7 +395,14 @@ void tputch(char p_char)
                     ((prev_char != MaiTaiKhu) || (prev_char != Karan)))
                 {
                     putupper(combinechar(prev_char, p_char));
-                    level_flag = 3;
+                    if (good_char)
+                    {
+                        level_flag = 3;
+                    }
+                    else
+                    {
+                        level_flag = 2;
+                    }
                 }
                 else
                 {
