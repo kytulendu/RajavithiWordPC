@@ -352,18 +352,11 @@ void tputch(char p_char)
         /* a character code is สระอุ and สระอู */
         else if ((p_char == SaraU) || (p_char == SaraUu))
         {
-            if (level_flag == 1)
+            if ((level_flag == 1) &&
+                ((prev_char >= KoKai) && (prev_char <= HoNokHuk)))
             {
-                if ((prev_char >= KoKai) && (prev_char <= HoNokHuk))
-                {
-                    putunder(p_char);
-                    level_flag = 0;
-                }
-                else
-                {
-                    good_char = 0;
-                    beep();
-                }
+                putunder(p_char);
+                level_flag = 0;
             }
             else
             {
@@ -392,25 +385,17 @@ void tputch(char p_char)
                 prev_char = p_char;
                 level_flag = 2;
             }
-            else if (level_flag == 2)
+            else if ((level_flag == 2) && (prev_char != p_char) &&
+                ((prev_char != MaiTaiKhu) || (prev_char != Karan)))
             {
-                if ((prev_char != p_char) &&
-                    ((prev_char != MaiTaiKhu) || (prev_char != Karan)))
+                putupper(combinechar(prev_char, p_char));
+                if (good_char)
                 {
-                    putupper(combinechar(prev_char, p_char));
-                    if (good_char)
-                    {
-                        level_flag = 3;
-                    }
-                    else
-                    {
-                        level_flag = 2;
-                    }
+                    level_flag = 3;
                 }
                 else
                 {
-                    good_char = 0;
-                    beep();
+                    level_flag = 2;
                 }
             }
             else        /* level_flag == 3 */
