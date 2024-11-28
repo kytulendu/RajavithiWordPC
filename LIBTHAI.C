@@ -383,7 +383,8 @@ void tputch(char p_char)
                     level_flag = 2;
                 }
             }
-            else if (level_flag == 1)
+            else if ((level_flag == 1) &&
+                ((prev_char >= KoKai) && (prev_char <= HoNokHuk)))
             {
                 putupper(p_char);
                 prev_char = p_char;
