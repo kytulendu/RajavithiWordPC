@@ -209,7 +209,7 @@ demo.lnk: $(__MAKEFILES__)
 
 ##############################################################################
 
-all: bin2inc codeku codeibm reset rega rvga thaicour rw demo
+all: bin2inc codeku codeibm reset rorg rega rvga thaicour rw demo
 
 clean: .SYMBOLIC
     @if exist *.com del *.com
