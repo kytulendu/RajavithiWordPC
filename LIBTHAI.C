@@ -99,8 +99,10 @@ int good_char = 1;
 /*  Private Function Prototype  */
 /* ============================ */
 
+/** Change cursor shape to big rectangle, indicate Thai input */
 void tcursor();
 
+/** Change cursor shape to small rectangle, indicate English input */
 void ecursor();
 
 /** Write given character to video memory directly.
@@ -251,23 +253,15 @@ void putmiddle(char p_char)
 {
     gotoxy(x_pos, y_pos);
     putcha(p_char);
-    /*prnchar(p_char, attr, x_pos, y_pos);*/
     x_pos = x_pos + 1;
     gotoxy(x_pos, y_pos);
 }
 
 void putunder(char p_char)
 {
-    if (y_pos == 25)
-    {
-        putcha(LF);
-        y_pos = y_pos - 1;
-    }
     gotoxy(x_pos - 1, y_pos + 1);
     putcha(p_char);
     gotoxy(x_pos, y_pos);
-
-    /*prnchar(p_char, attr, x_pos - 1, y_pos + 1);*/
 }
 
 void putupper(char p_char)
@@ -275,8 +269,6 @@ void putupper(char p_char)
     gotoxy(x_pos - 1, y_pos - 1);
     putcha(p_char);
     gotoxy(x_pos, y_pos);
-
-    /*prnchar(p_char, attr, x_pos - 1, y_pos - 1);*/
 }
 
 char combinechar(char p_prev, char p_new)
@@ -418,9 +410,6 @@ void tputstr(const char* p_string)
     x_pos = wherex();
     y_pos = wherey();
 
-    // get attribute
-
-    //while ((*p_string != '\0') && (x_pos < MAXCOL))
     while (*p_string != '\0')
     {
         /* Wait for vertical retrace (vsync). */
@@ -554,10 +543,6 @@ void tgetstr(char* p_string, int p_length)
             {
                 case BS:
                     tdelch(p_string);
-                    break;
-                case CR:
-                    //p_string[0] = idx - 1;
-                    //p_string[0] = SPACE;
                     break;
             }
         }
