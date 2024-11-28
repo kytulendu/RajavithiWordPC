@@ -39,6 +39,8 @@
 #define ESC                 0x1b
 #define SPACE               0x20
 
+#define KoKai               0xa1                /* ก */
+#define HoNokHuk            0xcb                /* ฮ */
 #define SaraU               0xd7                /* สระอุ */
 #define SaraUu              0xd8                /* สระอู */
 #define SaraIe              0xd9                /* สระอิ */

@@ -83,10 +83,10 @@ char attr;
 /* Flag indicate level of character.
  *  0 = lower, 1 = middle, 2 = upper, 3 = combined upper character
  */
-int level_flag = 1;
+int level_flag = 0;
 
 /* Previous upper character, using in combined character. */
-char prev_char;
+char prev_char = 0x00;
 
 /* Flag indicate keyboard input mode.
  * 0 = English, 1 = Thai
@@ -232,7 +232,6 @@ void putmiddle(char p_char)
     putcha(p_char);
     /*prnchar(p_char, attr, x_pos, y_pos);*/
     x_pos = x_pos + 1;
-    level_flag = 1;
     gotoxy(x_pos, y_pos);
 }
 
@@ -326,14 +325,24 @@ void tputch(char p_char)
         if (p_char < SaraU)
         {
             putmiddle(p_char);
+            level_flag = 1;
+            prev_char = p_char;
         }
         /* a character code is สระอุ and สระอู */
         else if ((p_char == SaraU) || (p_char == SaraUu))
         {
             if (level_flag == 1)
             {
-                putunder(p_char);
-                level_flag = 0;
+                if ((prev_char >= KoKai) && (prev_char <= HoNokHuk))
+                {
+                    putunder(p_char);
+                    level_flag = 0;
+                }
+                else
+                {
+                    good_char = 0;
+                    beep();
+                }
             }
             else
             {
