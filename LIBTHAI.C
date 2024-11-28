@@ -468,9 +468,9 @@ void tdelch(char* p_string)
             ch = p_string[idx - 1];
             if (ch >= SaraIe)
             {
-              putupper(ch);
-              level_flag = 2;
-              prev_char = ch;
+                putupper(ch);
+                level_flag = 2;
+                prev_char = ch;
             }
             else
             {
