@@ -108,6 +108,8 @@ int mode_flag = 0;
 
 int good_char = 1;
 
+unsigned char idx;
+
 /* ============================ */
 /*  Private Function Prototype  */
 /* ============================ */
@@ -453,8 +455,6 @@ char tgetch()
 
     return (mode_flag ? thai_keyboard_table[ch] : ch);
 }
-
-unsigned char idx;
 
 void tdelch(char* p_string)
 {
