@@ -7,7 +7,7 @@
 // whatever you want with this stuff.  If we meet some day, and you think this stuff is
 // worth it, you can buy me a beer in return.  Sandro Sigala
 //
-// Modified for output assembly data by Khral Steelforge.
+// Modified for output assembly data by Khralkatorrix.
 //
 // syntax:  bin2inc <input_file> <output_file>
 //
